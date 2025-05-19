@@ -25,7 +25,7 @@ const useRadarpad = () => {
       const gamepads = navigator.getGamepads();
       if (gamepads[0]) {
         const gp = gamepads[0];
-        setAxes((prev) => [prev[0], Round(gp.axes[1])]); // update axes values
+        setAxes((prev) => [prev[0], gp.axes[1]]); // update axes values
       }
       if (gamepads[1]) {
         const radar = gamepads[1];
@@ -33,9 +33,7 @@ const useRadarpad = () => {
         else if (radar.axes[1] === 1) setAxes((prev) => [-1, prev[1]]);
         else setAxes((prev) => [0, prev[1]]);
       }
-      setTimeout(() => {
-        animationFrameId = requestAnimationFrame(update);
-      }, 1000);
+      animationFrameId = requestAnimationFrame(update);
     }
 
     update();
