@@ -9,12 +9,18 @@ import { Physics } from "@react-three/rapier";
 function App() {
   return (
     <>
-      <Canvas camera={{ position: [0, 6, 0], fov: 80 }}>
+      <Canvas camera={{ position: [0, 5, 0], fov: 80 }}>
         <ambientLight castShadow />
         <OrbitControls />
         <directionalLight
           color="white"
-          position={[0, 100, 0]}
+          position={[0, 10, 1]}
+          intensity={2}
+          castShadow
+        />
+        <directionalLight
+          color="white"
+          position={[1, 10, 0]}
           intensity={2}
           castShadow
         />
@@ -24,8 +30,8 @@ function App() {
           maxSubSteps={5} // increase physics substeps
           solverIterations={16}
         >
-          <Ball />
           <Tray />
+          <Ball />
         </Physics>
       </Canvas>
     </>

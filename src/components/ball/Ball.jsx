@@ -20,23 +20,28 @@ function Ball() {
     }
   });
   useEffect(() => {
+    const random = Math.random();
     const impulse = {
-      x: (Math.random() - 0.5) * 0.21, // small impulse between -0.1 and +0.1
+      x: (random - 0.5) * 0.21, // small impulse between -0.1 and +0.1
       y: 0,
-      z: (Math.random() - 0.5) * 0.21,
+      z: (-random + 0.5) * 0.21,
     };
 
+    let intervalID = null;
     if (ballRef.current) {
-      setTimeout(() => {
+      intervalID = setInterval(() => {
         ballRef.current.applyImpulse(impulse, true);
-      }, 300);
+      }, 1000);
     }
+    return () => {
+      clearInterval(intervalID);
+    };
   }, []);
 
   return (
-    <RigidBody ref={ballRef} colliders="ball">
+    <RigidBody ref={ballRef} colliders="ball" ccd={true} friction={1} mass={10}>
       <mesh ref={ballMessRef} position={[0, 3, 0]} castShadow>
-        <sphereGeometry args={[0.5]} />
+        <sphereGeometry args={[0.3]} />
         <meshStandardMaterial
           color="#d04bcb"
           metalness={0.4}

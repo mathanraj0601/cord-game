@@ -47,41 +47,32 @@ export default function Tray() {
     trayRef.current.setRotation(quaternion, true);
   });
 
+  const upward = 0.3;
+
   const bowlGeometry = useMemo(() => {
     const points = [];
-    points.push(new THREE.Vector2(2.9, -0.1)); // inner slope
-    points.push(new THREE.Vector2(3.1, 0)); // inner slope
-    points.push(new THREE.Vector2(3.2, 0.4)); // inner slope
-    points.push(new THREE.Vector2(3.3, 0.5)); // inner slope
-    points.push(new THREE.Vector2(3.4, 0.6)); // inner slope
-    points.push(new THREE.Vector2(3.5, 0.5)); // inner slope
+    points.push(new THREE.Vector2(2.5, -0.1)); // inner slope
+    points.push(new THREE.Vector2(3.05, 0)); // inner slope
+    points.push(new THREE.Vector2(3.1, 0.4)); // inner slope
+    points.push(new THREE.Vector2(3.15, 0.5)); // inner slope
+    points.push(new THREE.Vector2(3.2, 1)); // inner slope
+    points.push(new THREE.Vector2(3.25, 0.5));
 
     return new THREE.LatheGeometry(points, 128);
   }, []);
 
   return (
-    <RigidBody ref={trayRef} type="fixed" colliders={false}>
+    <RigidBody ref={trayRef} type="kinematicVelocity" colliders={false} ccd>
       <group>
-        <mesh castShadow geometry={bowlGeometry}>
-          <meshStandardMaterial
-            color="#506577"
-            metalness={0.3}
-            roughness={0.7}
-            side={THREE.DoubleSide}
-          />
-        </mesh>
-
         <group>
-          <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-            <circleGeometry args={[3, 64]} />
+          <mesh castShadow geometry={bowlGeometry}>
             <meshStandardMaterial
-              color="#506577"
+              color="#6c7aa1"
               metalness={0.3}
               roughness={0.7}
               side={THREE.DoubleSide}
             />
           </mesh>
-          <CylinderCollider args={[0.01, 3]} position={[0, 0.001, 0]} />
 
           {/* Ring of CuboidColliders to restrict ball within circle */}
           {[...Array(120)].map((_, i) => {
@@ -94,20 +85,41 @@ export default function Tray() {
             return (
               <CuboidCollider
                 key={i}
-                args={[0.05, 0.2, 0.3]} // thin walls
-                position={[x, 0.15, z]} // slightly raised to form a wall
+                args={[0.15, 0.6, 0.3]} // thin walls
+                position={[x, upward + 0.05, z]} // slightly raised to form a wall
                 rotation={[0, rotation, 0]}
               />
             );
           })}
+        </group>
+
+        <group>
+          <mesh
+            receiveShadow
+            rotation={[-Math.PI / 2, 0, 0]}
+            position={[0, upward, 0]}
+          >
+            <circleGeometry args={[3, 64]} />
+            <meshStandardMaterial
+              color="#6c7aa1"
+              metalness={0.3}
+              roughness={0.7}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+          <CylinderCollider
+            args={[0.3, 4]}
+            position={(0, upward + 0.004, 0)}
+            sensor={false}
+          />
 
           <Circle
-            meshPosition={[0, 0.003, 0]}
+            meshPosition={[0, upward + 0.003, 0]}
             geoArgs={[1, 64]}
             color="#ff6666"
           />
           <Circle
-            meshPosition={[0, 0.002, 0]}
+            meshPosition={[0, upward + 0.002, 0]}
             geoArgs={[2, 64]}
             color="#FFB6C1"
           />

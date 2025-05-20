@@ -4,7 +4,7 @@ export default function Plus() {
   const plusGeometry = [0.1, 0.5, 0.01];
 
   return (
-    <group>
+    <group position={[0, 0.3, 0]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <boxGeometry args={plusGeometry} />
         <meshStandardMaterial color="black" />
