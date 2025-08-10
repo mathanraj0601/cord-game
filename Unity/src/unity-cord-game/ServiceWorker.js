@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-ball-game-0.1.0";
 const contentToCache = [
     "Build/unity-cord-game.loader.js",
-    "Build/unity-cord-game.framework.js.br",
-    "Build/unity-cord-game.data.br",
-    "Build/unity-cord-game.wasm.br",
+    "Build/unity-cord-game.framework.js",
+    "Build/unity-cord-game.data",
+    "Build/unity-cord-game.wasm",
     "TemplateData/style.css"
 
 ];
